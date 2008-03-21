@@ -4,4 +4,4 @@
 
 MODULE = Some::Employee  PACKAGE = Some::Employee
 
-INCLUDE: Employee_struct.xsc
+INCLUDE: Employee_struct.xsi
