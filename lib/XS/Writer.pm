@@ -5,6 +5,8 @@ use warnings;
 
 our $VERSION = 0.01;
 
+use File::Basename;
+use File::Path;
 use Carp;
 use Moose;
 use Moose::Autobox;
@@ -293,12 +295,11 @@ sub type_accessor {
     $self->type_accessors->{$type} = $xs;
 }
 
-=head3 write_file
+=head3 make_xs
 
-    $writer->write_file;
+    my $xs = $self->make_xs;
 
-This will write out the XS file.  By default it will put it into
-lib/Your/Package_struct.xs.
+Generates the XS code.
 
 =cut
 
@@ -362,6 +363,26 @@ sub make_xs {
     return    $self->make_xs_header
             . "\n\n"
             . $self->make_xs_accessors;
+}
+
+
+=head3 write_xs
+
+    $writer->write_xs;
+
+Writes the XS to $writer->xs_file.
+
+=cut
+
+sub write_xs {
+    my $self = shift;
+    
+    my $dir = dirname($self->xs_file);
+    mkpath $dir unless -d $dir;
+
+    open my $fh, '>', $self->xs_file
+        or die "Can't write to @{[ $self->xs_file ]}: $!";
+    print $fh $self->make_xs;
 }
 
 
