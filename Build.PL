@@ -18,6 +18,12 @@ my $build = Module::Build->new(
     },
     configure_requires  => {
         'Module::Build'     => 0.2808,
+    },
+
+    resources => {
+        license     =>  http://dev.perl.org/licenses/
+        bugtracker  =>  http://rt.cpan.org/NoAuth/Bugs.html?Dist=XS-Writer
+        repository  =>  http://svn.schwern.org/svn/CPAN/XS-Writer
     }
 );
 $build->create_build_script;

@@ -386,9 +386,34 @@ sub write_xs {
 }
 
 
+=head1 AUTHOR
+
+Michael G Schwern E<lt>schwern@pobox.comE<gt>
+
+
+=head1 LICENSE
+
+Copyright 2008 by Michael G Schwern E<lt>schwern@pobox.comE<gt>.
+
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+See F<http://dev.perl.org/licenses>
+
+
+=head1 THANKS
+
+Thanks to...
+
+Tom Heady for answering my cry for XS help and showing me how
+to do struct accessors.
+
+Simon Cozens for "Embedding and Extending Perl"
+
+
 =head1 SEE ALSO
 
-Inline::Struct, ExtUtils::XSBuilder
+L<Inline::Struct>, L<ExtUtils::XSBuilder>, L<perlxs>
 
 =cut
 
