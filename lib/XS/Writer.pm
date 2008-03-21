@@ -90,10 +90,11 @@ modules are themselves almost as complicated as XS itself.
 
 This module helps you write XS by taking care of some of the rote things
 for you.  Right now it just makes structs available as objects, writing a
-constructor, destructor and accessors.
+constructor and accessors.
 
 The instructions are meant for Module::Build.  Adapt as necessary for
 MakeMaker.
+
 
 =head1 Methods
 
@@ -319,7 +320,7 @@ typedef @{[ $self->struct_type ]} *     @{[ $self->xs_type ]};
 MODULE = @{[ $self->package ]}  PACKAGE = @{[ $self->package ]}  PREFIX = @{[ $self->xs_prefix ]}
 
 @{[ $self->package ]}
-@{[ $self->xs_type ]}_new(char* CLASS)
+@{[ $self->xs_type ]}_new( char* CLASS )
     CODE:
        RETVAL = (@{[ $self->struct_constructor ]});
         if( RETVAL == NULL ) {
@@ -327,6 +328,12 @@ MODULE = @{[ $self->package ]}  PACKAGE = @{[ $self->package ]}  PREFIX = @{[ $s
        }
     OUTPUT:
        RETVAL
+
+
+void
+@{[ $self->xs_type ]}_free( @{[ $self->package ]} self )
+    CODE:
+        free(self);
 END
 
     return $xs;

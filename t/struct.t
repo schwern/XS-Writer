@@ -42,7 +42,7 @@ typedef employee *     Some__Employee;
 MODULE = Some::Employee  PACKAGE = Some::Employee  PREFIX = Some__Employee_
 
 Some::Employee
-Some__Employee_new(char* CLASS)
+Some__Employee_new( char* CLASS )
     CODE:
        RETVAL = ((malloc(sizeof(employee))));
         if( RETVAL == NULL ) {
@@ -50,6 +50,12 @@ Some__Employee_new(char* CLASS)
        }
     OUTPUT:
        RETVAL
+
+
+void
+Some__Employee_free( Some::Employee self )
+    CODE:
+        free(self);
 
 
 int
