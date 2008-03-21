@@ -21,9 +21,9 @@ my $build = Module::Build->new(
     },
 
     resources => {
-        license     =>  http://dev.perl.org/licenses/
-        bugtracker  =>  http://rt.cpan.org/NoAuth/Bugs.html?Dist=XS-Writer
-        repository  =>  http://svn.schwern.org/svn/CPAN/XS-Writer
+        license     =>  'http://dev.perl.org/licenses/',
+        bugtracker  =>  "http://rt.cpan.org/NoAuth/Bugs.html?Dist=XS-Writer",
+        repository  =>  "http://svn.schwern.org/svn/CPAN/XS-Writer",
     }
 );
 $build->create_build_script;
