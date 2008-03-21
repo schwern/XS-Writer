@@ -21,8 +21,8 @@ is $writer->xs_file,    "lib/Some/Employee_struct.xs";
 $writer->struct(<<'END');
     typedef struct employee {
         char *      name;
-        int         salary;
-        double      id;
+        double      salary;
+        int         id;
     };
 END
 
@@ -48,4 +48,36 @@ Some__Employee_new(char* CLASS)
        }
     OUTPUT:
        RETVAL
+
+
+int
+Some__Employee_id( Some::Employee self, ... )
+    CODE:
+        if( items > 1 )
+            self->id = SvIV(ST(1));
+        RETVAL = self->id;
+    OUTPUT:
+        RETVAL
+
+
+char *
+Some__Employee_name( Some::Employee self, ... )
+    CODE:
+        if( items > 1 )
+            self->name = SvPV_nolen(ST(1));
+        RETVAL = self->name;
+    OUTPUT:
+        RETVAL
+
+
+double
+Some__Employee_salary( Some::Employee self, ... )
+    CODE:
+        if( items > 1 )
+            self->salary = SvNV(ST(1));
+        RETVAL = self->salary;
+    OUTPUT:
+        RETVAL
+
+
 END

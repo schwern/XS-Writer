@@ -12,7 +12,7 @@ use Moose::Autobox;
 {
     package StringWithWhitespace;
     use Moose::Role;
-    
+
     sub strip_ws {
         $_[0] =~ s/^\s+//;
         $_[0] =~ s/\s+$//;
@@ -35,11 +35,11 @@ XS::Writer - Module to write some XS for you
 
     # As part of your build process...
     use XS::Writer;
-    
+
     my $writer = XS::Writer->new(
         package   => 'Some::Employee'
     );
-    
+
     $writer->struct(<<'END');
         typedef struct employee {
             char *      name;
@@ -47,7 +47,7 @@ XS::Writer - Module to write some XS for you
             int         id;
         };
     END
-    
+
     # This will generate lib/Some/Employee_struct.xs
     $writer->write_file;
 
@@ -65,16 +65,16 @@ XS::Writer - Module to write some XS for you
 
     # And finally in lib/Some/Employee.pm
     package Some::Employee;
-    
+
     our $VERSION = 1.23;
-    
+
     use XSLoader;
     XSLoader::load __PACKAGE__, $VERSION;
 
 
     # And you will be able to do
     use Some::Employee;
-    
+
     my $employee = Some::Employee->new;
     $employee->name("Yarrow Hock");
 
@@ -90,7 +90,7 @@ This module helps you write XS by taking care of some of the rote things
 for you.  Right now it just makes structs available as objects, writing a
 constructor, destructor and accessors.
 
-The instructions are meant for Module::Build.  Adapt as necessary for 
+The instructions are meant for Module::Build.  Adapt as necessary for
 MakeMaker.
 
 =head1 Methods
@@ -162,46 +162,49 @@ has 'struct_constructor' =>
 has 'type_accessors' =>
     is          => 'rw',
     isa         => 'HashRef',
-    lazy        => 1,
-    default     => sub {
-        my $self = shift;
-        $self->type_accessor(int => <<'END');
-$type                                                                                                                     
-$accessor( $class self, ... )                                                                  
-    CODE:                                                                                                               
-        if( items > 1 )                                                                                                 
-            self->$key = SvIV(ST(1));                                                                           
-        RETVAL = self->$key;                                                                                    
-    OUTPUT:                                                                                                             
-        RETVAL
-END
-
-        $self->type_accessor("char *" => <<'END');
-$type                                                                                                                     
-$accessor( $class self, ... )                                                                  
-    CODE:                                                                                                               
-        if( items > 1 )                                                                                                 
-            self->$key = SvPV_nolen(ST(1));                                                                           
-        RETVAL = self->$key;                                                                                    
-    OUTPUT:                                                            
-        RETVAL
-END
-
-        $self->type_accessor(double => <<'END');
-$type                                                                                                                     
-$accessor( $class self, ... )                                                                  
-    CODE:                                                                                                               
-        if( items > 1 )                                                                                                 
-            self->$key = SvNV(ST(1));                                                                           
-        RETVAL = self->$key;                                                                                    
-    OUTPUT:                                                            
-        RETVAL
-END
-};
-
-END
-
+    default     => sub { {} },
 ;
+
+
+sub new {
+    my $class = shift;
+    my $self = $class->SUPER::new(@_);
+
+    $self->type_accessor(int => <<'END');
+$type
+$accessor( $class self, ... )
+    CODE:
+        if( items > 1 )
+            self->$key = SvIV(ST(1));
+        RETVAL = self->$key;
+    OUTPUT:
+        RETVAL
+END
+
+    $self->type_accessor("char *" => <<'END');
+$type
+$accessor( $class self, ... )
+    CODE:
+        if( items > 1 )
+            self->$key = SvPV_nolen(ST(1));
+        RETVAL = self->$key;
+    OUTPUT:
+        RETVAL
+END
+
+    $self->type_accessor(double => <<'END');
+$type
+$accessor( $class self, ... )
+    CODE:
+        if( items > 1 )
+            self->$key = SvNV(ST(1));
+        RETVAL = self->$key;
+    OUTPUT:
+        RETVAL
+END
+
+    return $self;
+}
 
 
 =head3 struct
@@ -228,15 +231,15 @@ sub struct {
     my $type = $1;
 
     croak "Can't figure out the type" unless $type;
-    
+
     # Get the braces out of the way.
     $typedef =~ s/.*?{\s+//;
     $typedef =~ s/\s+}.*?//;
-    
+
     # All we should have left is "type key;"
     my %elements = map {
                        /^(.*)\s+(\w+)$/ ?
-                           ($1 => $2) : ()
+                           ($2 => $1) : ()
                    }
                    map { $_->strip_ws;  $_->squeeze_ws }
                        split /;/, $typedef;
@@ -263,7 +266,7 @@ Here's an example for an accessor to elements with the 'double' type.
             CODE:
                 if( items > 1 )  /* setting */
                     self->$key = SvNV(ST(1));
-                
+
                 RETVAL = self->$key;
             OUTPUT:
                 RETVAL
@@ -286,7 +289,7 @@ sub type_accessor {
 
     $xs =~ s{\$type} {$type}g;
     $xs =~ s{\$class}{$package}g;
-    
+
     $self->type_accessors->{$type} = $xs;
 }
 
@@ -299,9 +302,9 @@ lib/Your/Package_struct.xs.
 
 =cut
 
-sub make_xs {
+sub make_xs_header {
     my $self = shift;
-    
+
     my $xs = <<END;
 /* Generated by XS::Writer $VERSION */
 #include "EXTERN.h"
@@ -327,6 +330,40 @@ END
 
     return $xs;
 }
+
+
+sub make_xs_accessors {
+    my $self = shift;
+
+    my $xs = '';
+
+    my $elements  = $self->struct_elements;
+    my $accessors = $self->type_accessors;
+    my $xs_type   = $self->xs_type;
+    for my $key (sort { lc $a cmp lc $b } keys %$elements) {
+        my $type = $elements->{$key};
+
+        my $accessor = $accessors->{$type}
+            or croak "No accessor for type $type";
+        $accessor =~ s/\$accessor/${xs_type}_${key}/g;
+        $accessor =~ s/\$key/$key/g;
+
+        $xs .= $accessor;
+        $xs .= "\n\n";
+    }
+
+    return $xs;
+}
+
+
+sub make_xs {
+    my $self = shift;
+
+    return    $self->make_xs_header
+            . "\n\n"
+            . $self->make_xs_accessors;
+}
+
 
 =head1 SEE ALSO
 
