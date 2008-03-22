@@ -127,10 +127,15 @@ best in the universe.  Patches welcome.
 
 Setup a new writer.  Arguments are...
 
-    package         (required) The package to write your XS into.
-    xs_file         (optional) Where to write the XS file.  Defaults to
-                    lib/Your/Package_struct.xs
-    include         (optional) Any extra code to include
+    package             (required) The package to write your XS into.
+
+    xs_file             (optional) Where to write the XS file.  Defaults to
+                        lib/Your/Package_struct.xs
+
+    include             (optional) Any extra code to include
+
+    struct_constructor  (optional) Code to make a struct.  Defaults to
+                        (malloc(sizeof(struct_type)))
 
 =cut
 

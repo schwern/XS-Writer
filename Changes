@@ -1,3 +1,11 @@
+0.03
+    Tests
+    * Fix the tests for Windows
+
+    Docs
+    * Document struct_constructor
+
+
 0.02  Sat Mar 22 01:08:48 PDT 2008
     Bugs
     * Comment stripping on the structs was only stripping the first comment.
@@ -6,6 +14,7 @@
 
     Docs
     * Corrected the use of include in the SYNOPSIS
+
 
 0.01  Sat Mar 21 11:41:00 PDT 2008
     * It works!
