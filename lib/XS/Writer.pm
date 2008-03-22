@@ -100,10 +100,23 @@ modules are themselves almost as complicated as XS itself.
 
 This module helps you write XS by taking care of some of the rote things
 for you.  Right now it just makes structs available as objects, writing a
-constructor and accessors.
+constructor and accessors.  It's designed to be fairly transparent but
+you still need to understand some XS.
 
 The instructions are meant for Module::Build.  Adapt as necessary for
 MakeMaker.
+
+
+=head1 Example
+
+See F<t/Some-Employee> in the source tree for an example.
+
+
+=head1 Stability
+
+It's not.  I'm writing this to fit my own needs and it's likely to change
+as my knowledge of XS changes.  Also the XS it generates probably isn't the
+best in the universe.  Patches welcome.
 
 
 =head1 Methods
