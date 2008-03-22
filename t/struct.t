@@ -23,9 +23,10 @@ is $writer->header_file,"Employee_struct.h";
 
 $writer->struct(<<'END');
     typedef struct employee {
-        char *      name;
-        double      salary;
+        char *      name;    /* this is a comment */
+        double      salary;  /* this is another comment */
         int         id;
+        // and this is a comment
     };
 END
 

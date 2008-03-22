@@ -1,0 +1,6 @@
+0.02
+    Bugs
+    * Comment stripping on the structs was only stripping the first comment.
+
+0.01
+    * It works!

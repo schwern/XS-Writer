@@ -258,8 +258,8 @@ sub struct {
     my $typedef = shift;
 
     # Cleanup
-    $typedef =~ s{/\* .* \*/}{};    # strip C comments
-    $typedef =~ s{//.*}{};          # strip C++ comments
+    $typedef =~ s{/\* .* \*/}{}g;    # strip C comments
+    $typedef =~ s{//.*}{}g;          # strip C++ comments
     $typedef->strip_ws;
 
     $typedef =~ s/^typedef\s+//;        # optional "typedef"
