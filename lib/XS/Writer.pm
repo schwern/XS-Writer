@@ -144,7 +144,7 @@ has 'xs_type',
     default     => sub {
         my $self = shift;
         my $type = $self->package;
-        $type =~ s/::/__/;
+        $type =~ s/::/__/g;
         return $type;
     }
 ;
@@ -162,7 +162,7 @@ has 'xs_file',
     default     => sub {
         my $self = shift;
         my $file = $self->package;
-        $file =~ s{::}{/};
+        $file =~ s{::}{/}g;
         return "lib/${file}_struct.xsi";
     }
 ;

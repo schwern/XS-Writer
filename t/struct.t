@@ -129,3 +129,14 @@ END
     is_deeply $struct->struct_elements, { thing => "char *" },
         "can parse 'char *foo' style";
 }
+
+
+# Tests for packages with more than one set of ::
+{
+    my $writer = XS::Writer->new(
+        package     => 'Foo::Bar::Baz::Bim'
+    );
+    
+    is $writer->xs_file, 'lib/Foo/Bar/Baz/Bim_struct.xsi';
+    is $writer->xs_type, 'Foo__Bar__Baz__Bim';
+}
