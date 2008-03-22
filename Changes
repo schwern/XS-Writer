@@ -1,8 +1,11 @@
-0.02
+0.02  Sat Mar 22 01:08:48 PDT 2008
     Bugs
     * Comment stripping on the structs was only stripping the first comment.
     * Fix handling of "char *foo"
     * Fix for packages with more than one :: in the name.
 
-0.01
+    Docs
+    * Corrected the use of include in the SYNOPSIS
+
+0.01  Sat Mar 21 11:41:00 PDT 2008
     * It works!

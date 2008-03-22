@@ -3,7 +3,7 @@ package XS::Writer;
 use strict;
 use warnings;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 use File::Basename;
 use File::Path;
@@ -39,7 +39,10 @@ XS::Writer - Module to write some XS for you
     use XS::Writer;
 
     my $writer = XS::Writer->new(
-        package   => 'Some::Employee'
+        package   => 'Some::Employee',
+
+        # defines the employee struct
+        include   => '#include "employee.h"',
     );
 
     $writer->struct(<<'END');
@@ -59,9 +62,6 @@ XS::Writer - Module to write some XS for you
     #include "EXTERN.h"
     #include "perl.h"
     #include "XSUB.h"
-
-    /* Whatever defines the employee struct */
-    #include "employee.h"
 
     MODULE = Some::Employee  PACKAGE = Some::Employee
 
