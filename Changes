@@ -1,6 +1,7 @@
 0.02
     Bugs
     * Comment stripping on the structs was only stripping the first comment.
+    * Fix handling of "char *foo"
 
 0.01
     * It works!

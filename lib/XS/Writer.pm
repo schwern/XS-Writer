@@ -274,8 +274,8 @@ sub struct {
 
     # All we should have left is "type key;"
     my %elements = map {
-                       /^(.*)\s+(\w+)$/ ?
-                           ($2 => $1) : ()
+                       /^(.*?)\s*(\w+)$/ ?
+                            ($2 => $1) : ();
                    }
                    map { $_->strip_ws;  $_->squeeze_ws }
                        split /;/, $typedef;

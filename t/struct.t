@@ -113,3 +113,19 @@ eq_or_diff join("", <$fh>), <<"END";
 typedef employee *     Some__Employee;
 END
 
+
+
+{
+    my $struct = XS::Writer->new(
+        package     => 'Something'
+    );
+    
+    $struct->struct(<<'END');
+        struct foo {
+            char    *thing;
+        };
+END
+
+    is_deeply $struct->struct_elements, { thing => "char *" },
+        "can parse 'char *foo' style";
+}
