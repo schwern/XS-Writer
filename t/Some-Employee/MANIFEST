@@ -1,0 +1,7 @@
+Build.PL
+employee.h
+lib/Some/Employee.pm
+lib/Some/Employee.xs
+lib/Some/typemap
+MANIFEST			This list of files
+t/employee.t

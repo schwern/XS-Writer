@@ -6,6 +6,8 @@ my $build = Module::Build->new(
     module_name     => 'Some::Employee',
 
     include_dirs    => ['.'],
+
+    add_to_cleanup => ['Employee_struct.h', 'lib/Some/Employee_struct.xsi']
 );
 $build->create_build_script;
 
