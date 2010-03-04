@@ -11,6 +11,7 @@ my $build = Module::Build->new(
         'Moose'             => 0.40,
         'Moose::Autobox'    => 0.06,
         'Carp'              => 0,
+        'perl'              => 5.006,
     },
     build_requires  => {
         'Test::More'        => 0.62,
